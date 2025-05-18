@@ -7,6 +7,7 @@ class Kelas extends CI_Controller {
         parent::__construct();
         $this->load->model('Kelas_model');
         $this->load->helper('url');
+		$this->load->library('notif_lib');
     }
 
     public function index() {

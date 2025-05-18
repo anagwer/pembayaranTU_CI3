@@ -1,71 +1,57 @@
-###################
-What is CodeIgniter
-###################
+Sistem Pembayaran TU
+====================
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+Sistem Pembayaran TU adalah aplikasi untuk manajemen pembayaran dan laporan pembayaran pada sekolah. Aplikasi ini menggunakan PHP dengan framework CodeIgniter dan library DomPDF untuk menghasilkan laporan PDF.
 
-*******************
-Release Information
-*******************
+Instalasi
+---------
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+1. **Clone Repository**
+   Clone repository ini ke dalam direktori lokal Anda menggunakan Git:
+   
+git clone https://github.com/username/repository-name.git
 
-**************************
-Changelog and New Features
-**************************
+2. **Install Dependensi**
+Gunakan Composer untuk menginstal dependensi yang diperlukan:
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+composer install
 
-*******************
-Server Requirements
-*******************
+3. **Konfigurasi Database**
+- Buka file `application/config/database.php`.
+- Sesuaikan pengaturan database dengan database yang Anda gunakan.
 
-PHP version 5.6 or newer is recommended.
+4. **Import Database**
+Import skema database yang ada di folder `sql/` atau buat tabel yang diperlukan secara manual.
 
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
+5. **Jalankan Aplikasi**
+Jalankan aplikasi di server lokal Anda:
 
-************
-Installation
-************
+php -S localhost:8000
 
-Please see the `installation section <https://codeigniter.com/userguide3/installation/index.html>`_
-of the CodeIgniter User Guide.
 
-*******
-License
-*******
+Buka browser dan akses `http://localhost:8000` untuk melihat aplikasi.
 
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
+Alur Sistem
+-----------
 
-*********
-Resources
-*********
+1. **Login Sistem**
+Pengguna dapat login menggunakan **Username** dan **Password**. 
+- **Admin** dapat mengakses semua data siswa dan notifikasi.
+- **Orang Tua** hanya dapat melihat data yang terkait dengan NIS mereka.
 
--  `User Guide <https://codeigniter.com/docs>`_
--  `Contributing Guide <https://github.com/bcit-ci/CodeIgniter/blob/develop/contributing.md>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community Slack Channel <https://codeigniterchat.slack.com>`_
+2. **Pembayaran**
+Mengelola pembayaran siswa dan mencatat status pembayaran (Lunas / Belum Lunas).
 
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
+3. **Laporan Pembayaran**
+Admin dapat melihat laporan pembayaran berdasarkan kelas dan jenis pembayaran, sementara orang tua hanya bisa melihat pembayaran terkait dengan NIS mereka.
 
-***************
-Acknowledgement
-***************
+4. **Notifikasi**
+Sistem mengirimkan notifikasi terkait pembayaran dan status lainnya yang bisa ditandai sebagai "dibaca".
 
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
+Troubleshooting
+---------------
+
+- **Composer Tidak Terpasang**: Jika Composer belum terpasang, Anda bisa mengunduhnya di [https://getcomposer.org/](https://getcomposer.org/).
+- **500 Internal Server Error**: Periksa kembali konfigurasi database di `application/config/database.php` dan pastikan database dapat diakses.
+
+Terima kasih telah menggunakan Sistem Pembayaran TU!

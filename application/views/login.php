@@ -6,8 +6,6 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Sistem Pembayaran TU</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
 
   <!-- Favicons -->
   <link href="<?= base_url('assets/img/favicon.png') ?>" rel="icon">
@@ -15,16 +13,14 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Nunito:400,600|Poppins:400,500,600" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="<?= base_url('assets/vendor/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet">
   <link href="<?= base_url('assets/vendor/bootstrap-icons/bootstrap-icons.css') ?>" rel="stylesheet">
-  <link href="<?= base_url('assets/vendor/boxicons/css/boxicons.min.css') ?>" rel="stylesheet">
-  <link href="<?= base_url('assets/vendor/quill/quill.snow.css') ?>" rel="stylesheet">
-  <link href="<?= base_url('assets/vendor/quill/quill.bubble.css') ?>" rel="stylesheet">
-  <link href="<?= base_url('assets/vendor/remixicon/remixicon.css') ?>" rel="stylesheet">
-  <link href="<?= base_url('assets/vendor/simple-datatables/style.css') ?>" rel="stylesheet">
+	  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
 
   <!-- Template Main CSS File -->
   <link href="<?= base_url('assets/css/style.css') ?>" rel="stylesheet">
@@ -37,10 +33,8 @@
     <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
       <div class="container">
         <div class="row justify-content-center">
-
           <div class="col-lg-6">
             <div class="card">
-
               <div class="card-body">
                 <div class="col-lg-12 col-md-6 pt-4 text-center">
                   <div class="pt-2 pb-2">
@@ -59,18 +53,19 @@
 
                   <div class="col-12">
                     <label for="yourUsername" class="form-label">Username</label>
-                    <div class="input-group has-validation">
-                      <input type="text" name="username" class="form-control" id="yourUsername" placeholder="Masukkan username" required>
-                      <div class="invalid-feedback">Please enter your username.</div>
-                    </div>
+                    <input type="text" name="username" class="form-control" id="yourUsername" placeholder="Masukkan username" required>
+                    <div class="invalid-feedback">Please enter your username.</div>
                   </div>
 
                   <div class="col-12">
                     <label for="yourPassword" class="form-label">Password</label>
-                    <div class="input-group has-validation">
+                    <div class="input-group">
                       <input type="password" name="password" class="form-control" id="yourPassword" placeholder="Masukkan password" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
+                      <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()" tabindex="-1">
+                        <i class="fa fa-eye" id="toggleIcon"></i>
+                      </button>
                     </div>
+                    <div class="invalid-feedback">Please enter your password!</div>
                   </div>
 
                   <div class="col-12">
@@ -81,27 +76,39 @@
 
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </section>
   </div>
-</main><!-- End #main -->
+</main>
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<!-- Back to top -->
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+  <i class="bi bi-arrow-up-short"></i>
+</a>
 
 <!-- Vendor JS Files -->
-<script src="<?= base_url('assets/vendor/apexcharts/apexcharts.min.js') ?>"></script>
 <script src="<?= base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
-<script src="<?= base_url('assets/vendor/chart.js/chart.umd.js') ?>"></script>
-<script src="<?= base_url('assets/vendor/echarts/echarts.min.js') ?>"></script>
-<script src="<?= base_url('assets/vendor/quill/quill.min.js') ?>"></script>
-<script src="<?= base_url('assets/vendor/simple-datatables/simple-datatables.js') ?>"></script>
-<script src="<?= base_url('assets/vendor/tinymce/tinymce.min.js') ?>"></script>
-<script src="<?= base_url('assets/vendor/php-email-form/validate.js') ?>"></script>
 
-<!-- Template Main JS File -->
+<!-- Toggle Password Script -->
+<script>
+  function togglePassword() {
+    const passwordInput = document.getElementById("yourPassword");
+    const icon = document.getElementById("toggleIcon");
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+			Icon.classList.remove('fa-eye');
+			Icon.classList.add('fa-eye-slash');
+    } else {
+      passwordInput.type = "password";
+			Icon.classList.remove('fa-eye-slash');
+			Icon.classList.add('fa-eye');
+    }
+  }
+</script>
+
+<!-- Main JS File -->
 <script src="<?= base_url('assets/js/main.js') ?>"></script>
 
 </body>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Data Siswa</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 12px;
+            margin: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 18pt;
+        }
+
+        hr {
+            border: 1px solid #000;
+            margin: 10px 0 20px 0;
+        }
+
+        .info {
+            margin-bottom: 20px;
+            font-size: 10pt;
+        }
+
+        .info p {
+            margin: 2px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10pt;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 6px 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 10pt;
+            text-align: right;
+        }
+
+        .footer p {
+            margin-bottom: 60px;
+        }
+
+        .signature {
+            text-align: right;
+            font-size: 10pt;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2>LAPORAN DATA SISWA</h2>
+</div>
+
+<hr>
+
+<div class="info">
+    <?php if ($kelas): ?>
+        <p><strong>Kelas:</strong> <?= $kelas->nama_kelas ?> (<?= $kelas->tahun_ajaran ?>)</p>
+    <?php endif; ?>
+    <?php if ($from && $to): ?>
+        <p><strong>Periode:</strong> <?= date('d-m-Y', strtotime($from)) ?> s/d <?= date('d-m-Y', strtotime($to)) ?></p>
+    <?php endif; ?>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>NIS</th>
+            <th>Kelas</th>
+            <th>No HP</th>
+            <th>Alamat</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (empty($siswa)): ?>
+            <tr><td colspan="7" style="text-align:center;">Data tidak ditemukan.</td></tr>
+        <?php else: ?>
+            <?php $no = 1; foreach ($siswa as $s): ?>
+                <tr>
+                    <td><?= $no++ ?></td>
+                    <td style="text-align: left;"><?= $s->nama ?></td>
+                    <td><?= $s->nis ?></td>
+                    <td><?= $s->nama_kelas ?> (<?= $s->tahun_ajaran ?>)</td>
+                    <td><?= $s->no_hp ?></td>
+                    <td style="text-align: left;"><?= $s->alamat ?></td>
+                    <td><?= $s->status ?></td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
+
+<div class="footer">
+    <p>Dicetak pada: <?= date('d-m-Y') ?></p>
+    <div class="signature">
+        <p>Admin / Petugas</p>
+        <p>______________________</p>
+    </div>
+</div>
+
+</body>
+</html>

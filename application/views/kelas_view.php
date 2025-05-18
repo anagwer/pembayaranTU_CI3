@@ -5,7 +5,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Data Kelas</h5>
+                            <h3 class="card-title" style="font-weight: bold; font-size: 20px;">Data Kelas</h3>
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKelasModal"><i class="fa-solid fa-plus"></i> Tambah</button>
                             <hr>
 

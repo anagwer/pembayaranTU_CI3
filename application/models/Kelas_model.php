@@ -18,8 +18,12 @@ class Kelas_model extends CI_Model {
     public function delete($id) {
         return $this->db->where('id', $id)->delete('kelas');
     }
-		public function get_all_aktif() {
-				return $this->db->where('status', 'Aktif')->get('kelas')->result();
-		}
+	public function get_all_aktif() {
+			return $this->db->where('status', 'Aktif')->get('kelas')->result();
+	}
+	public function get_by_id($id) {
+		return $this->db->get_where('kelas', ['id' => $id])->row();
+	}
+
 
 }

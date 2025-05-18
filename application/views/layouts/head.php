@@ -47,6 +47,42 @@
 </head>
 
 
+<?php
+if (!function_exists('time_elapsed_string')) {
+    function time_elapsed_string($datetime, $full = false) {
+        $now = new DateTime;
+        $ago = new DateTime($datetime);
+        $diff = $now->diff($ago);
+
+        $diff->w = floor($diff->d / 7);
+        $diff->d -= $diff->w * 7;
+
+        $string = array(
+            'y' => 'tahun',
+            'm' => 'bulan',
+            'w' => 'minggu',
+            'd' => 'hari',
+            'h' => 'jam',
+            'i' => 'menit',
+            's' => 'detik',
+        );
+        foreach ($string as $k => &$v) {
+            if ($diff->$k) {
+                $v = $diff->$k . ' ' . $v;
+            } else {
+                unset($string[$k]);
+            }
+        }
+
+        if (!$full) $string = array_slice($string, 0, 1);
+        return $string ? implode(', ', $string) . ' lalu' : 'baru saja';
+    }
+}
+
+
+$this->load->library('notif_lib');
+$notifikasi = $this->notif_lib->get_notifikasi();
+?>
 
 <body>
 <!-- ======= Header ======= -->
@@ -63,75 +99,52 @@
 					 <li class="nav-item dropdown">
 
 						<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-							<i class="fa-solid fa-bell"></i>
-							<span class="badge bg-primary badge-number">4</span>
-						</a><!-- End Notification Icon -->
+								<i class="fa-solid fa-bell"></i>
+								<span class="badge bg-primary badge-number"><?= count($notifikasi) ?></span>
+						</a>
 
 						<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-							<li class="dropdown-header">
-								You have 4 new notifications
-								<a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-							</li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
+								<li class="dropdown-header">
+										You have <?= count($notifikasi) ?> new notifications
+										<a href="<?= base_url('notifikasi') ?>"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+								</li>
 
-							<li class="notification-item">
-								<i class="bi bi-exclamation-circle text-warning"></i>
-								<div>
-									<h4>Lorem Ipsum</h4>
-									<p>Quae dolorem earum veritatis oditseno</p>
-									<p>30 min. ago</p>
-								</div>
-							</li>
+								<li><hr class="dropdown-divider"></li>
 
-							<li>
-								<hr class="dropdown-divider">
-							</li>
+								<?php foreach ($notifikasi as $notif): ?>
+									<li class="notification-item d-flex justify-content-between align-items-start">
+											<div class="me-2">
+													<i class="bi bi-info-circle text-primary"></i>
+											</div>
+											<div class="flex-grow-1">
+													<h4>Pemberitahuan</h4>
+													<p><?= $notif->pesan ?></p>
+													<p class="small text-muted"><?= time_elapsed_string($notif->created_at) ?> ago</p>
+											</div>
 
-							<li class="notification-item">
-								<i class="bi bi-x-circle text-danger"></i>
-								<div>
-									<h4>Atque rerum nesciunt</h4>
-									<p>Quae dolorem earum veritatis oditseno</p>
-									<p>1 hr. ago</p>
-								</div>
-							</li>
+											<?php if ($this->session->userdata('role') === 'Ortu' && !$notif->is_read): ?>
+													<form method="post" action="<?= base_url('notifikasi/mark_as_read') ?>">
+															<input type="hidden" name="id" value="<?= $notif->id ?>">
+															<button type="submit" class="btn btn-sm btn-success" title="Tandai sudah dibaca">
+																	<i class="fa-solid fa-check"></i>
+															</button>
+													</form>
+											<?php endif; ?>
+									</li>
+									<li><hr class="dropdown-divider"></li>
+							<?php endforeach; ?>
 
-							<li>
-								<hr class="dropdown-divider">
-							</li>
 
-							<li class="notification-item">
-								<i class="bi bi-check-circle text-success"></i>
-								<div>
-									<h4>Sit rerum fuga</h4>
-									<p>Quae dolorem earum veritatis oditseno</p>
-									<p>2 hrs. ago</p>
-								</div>
-							</li>
+								<?php if (empty($notifikasi)): ?>
+										<li class="notification-item">
+												<div><p>Tidak ada notifikasi.</p></div>
+										</li>
+								<?php endif; ?>
 
-							<li>
-								<hr class="dropdown-divider">
-							</li>
-
-							<li class="notification-item">
-								<i class="bi bi-info-circle text-primary"></i>
-								<div>
-									<h4>Dicta reprehenderit</h4>
-									<p>Quae dolorem earum veritatis oditseno</p>
-									<p>4 hrs. ago</p>
-								</div>
-							</li>
-
-							<li>
-								<hr class="dropdown-divider">
-							</li>
-							<li class="dropdown-footer">
-								<a href="#">Show all notifications</a>
-							</li>
-
-						</ul><!-- End Notification Dropdown Items -->
+								<li class="dropdown-footer">
+										<a href="<?= base_url('notifikasi') ?>">Show all notifications</a>
+								</li>
+						</ul>
 
 					</li><!-- End Notification Nav -->
             <li class="nav-item dropdown pe-3">
@@ -149,7 +162,7 @@
 									</li>
 
 									<li>
-										<a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+										<a class="dropdown-item d-flex align-items-center" href="<?= base_url('user/setting') ?>">
 											<i class="fa-solid fa-gear"></i>
 											<span>Setting Profil</span>
 										</a>
@@ -184,6 +197,7 @@
             </a>
         </li>
 				<li class="nav-heading">Data Master</li>
+				<?php if ($this->session->userdata('role') == 'Admin'): ?>
         <li class="nav-item">
             <a class="nav-link <?= $current_page == 'kelas' ? '' : 'collapsed'; ?>" href="<?= base_url('kelas') ?>">
                <i class="fa-solid fa-school"></i> <span>Data Kelas</span>
@@ -194,7 +208,7 @@
                <i class="fa-regular fa-address-card"></i> <span>Data Siswa</span>
             </a>
         </li>
-
+				<?php endif;?>
         <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
           <i class="fa-regular fa-money-bill-1"></i><span>Pembayaran</span><i class="fa-solid fa-chevron-down ms-auto"></i>
@@ -222,7 +236,7 @@
 					</li>
         </ul>
       </li><!-- End Charts Nav -->
-
+<?php if ($this->session->userdata('role') == 'Admin'): ?>
 			<li class="nav-heading">Manajemen Pengguna</li>
 
         <li class="nav-item">
@@ -230,7 +244,7 @@
                 <i class="fa-solid fa-users"></i><span>Data Pengguna</span>
             </a>
         </li>
-
+<?php endif;?>
     </ul>
 </aside><!-- End Sidebar -->
 
