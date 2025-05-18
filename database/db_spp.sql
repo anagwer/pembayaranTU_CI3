@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2025 at 03:12 PM
+-- Generation Time: May 18, 2025 at 06:18 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -50,11 +50,21 @@ INSERT INTO `kelas` (`id`, `nama_kelas`, `tahun_ajaran`, `status`) VALUES
 
 CREATE TABLE `notifikasi` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `id_siswa` int(11) NOT NULL,
   `pesan` text NOT NULL,
   `is_read` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `notifikasi`
+--
+
+INSERT INTO `notifikasi` (`id`, `id_siswa`, `pesan`, `is_read`, `created_at`) VALUES
+(1, 1, 'Tagihan pembayaran Ujian sebesar Rp 70000 telah ditambahkan.', 0, '2025-05-17 00:14:30'),
+(2, 2, 'Tagihan pembayaran Kegiatan sebesar Rp 30000 telah ditambahkan.', 0, '2025-05-17 00:15:22'),
+(3, 1, 'Tagihan pembayaran Ujian sebesar Rp 70000 telah ditambahkan.', 0, '2025-05-17 00:15:47'),
+(4, 1, 'Pembayaran SPP sebesar Rp 200000 pada 2025-05-16 telah <b>Lunas</b>.', 1, '2025-05-17 00:30:15');
 
 -- --------------------------------------------------------
 
@@ -79,9 +89,11 @@ CREATE TABLE `pembayaran` (
 --
 
 INSERT INTO `pembayaran` (`id`, `id_user`, `id_siswa`, `id_kelas`, `jenis`, `jumlah`, `tanggal_bayar`, `keterangan`, `created_at`) VALUES
-(1, 1, 1, 1, 'SPP', 200000, '0000-00-00', NULL, '2025-05-15 07:56:23'),
+(1, 1, 1, 1, 'SPP', 200000, '2025-05-16', '', '2025-05-15 07:56:23'),
 (2, 1, 2, 1, 'SPP', 200000, '0000-00-00', NULL, '2025-05-15 07:56:23'),
-(3, 1, 2, 2, 'Uang Gedung', 3000000, '0000-00-00', NULL, '2025-05-15 07:57:36');
+(3, 1, 2, 2, 'Uang Gedung', 3000000, '0000-00-00', NULL, '2025-05-15 07:57:36'),
+(6, 1, 2, 2, 'Kegiatan', 30000, '0000-00-00', NULL, '2025-05-17 00:15:22'),
+(7, 1, 1, 1, 'Ujian', 70000, '0000-00-00', '', '2025-05-17 00:15:47');
 
 -- --------------------------------------------------------
 
@@ -96,16 +108,17 @@ CREATE TABLE `siswa` (
   `kelas_id` int(11) DEFAULT NULL,
   `no_hp` varchar(15) DEFAULT NULL,
   `alamat` text DEFAULT NULL,
-  `parent_id` int(11) DEFAULT NULL
+  `status` enum('Aktif','Non-Aktif') NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `siswa`
 --
 
-INSERT INTO `siswa` (`id`, `nama`, `nis`, `kelas_id`, `no_hp`, `alamat`, `parent_id`) VALUES
-(1, 'anon', '12345', 1, '089123123123', 'jakarta1', NULL),
-(2, 'budi', '56789', 2, '0892312323234', 'bekasi', NULL);
+INSERT INTO `siswa` (`id`, `nama`, `nis`, `kelas_id`, `no_hp`, `alamat`, `status`, `created_at`) VALUES
+(1, 'anon', '12345', 1, '089123123123', 'jakarta1', 'Aktif', '2025-05-18 22:03:15'),
+(2, 'budi', '56789', 2, '0892312323234', 'bekasi', 'Non-Aktif', '2025-05-18 22:03:15');
 
 -- --------------------------------------------------------
 
@@ -126,7 +139,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `created_at`) VALUES
-(2, 'admin', '$2y$10$rD9LOmtP0yhS/olN5bTFQe/qD6IJgEOyJVGvODsni8gusW58gZ8tO', 'Admin', '2025-05-14 23:46:59');
+(2, 'admin', '$2y$10$rD9LOmtP0yhS/olN5bTFQe/qD6IJgEOyJVGvODsni8gusW58gZ8tO', 'Admin', '2025-05-14 23:46:59'),
+(3, '12345', '$2y$10$zu/YTuOoAfrvPv8aTlllB.mokn/v8VOhjrOt4UXM8rTfO.KQYI5S2', 'Siswa', '2025-05-16 23:10:05'),
+(4, 'Or.12345', '$2y$10$ThdJXaUxQB9KmEmX0250meNPvpDavxKjRfwFcYjiYyN8VP.25KHSe', 'Ortu', '2025-05-16 23:10:05');
 
 --
 -- Indexes for dumped tables
@@ -143,7 +158,7 @@ ALTER TABLE `kelas`
 --
 ALTER TABLE `notifikasi`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`id_siswa`);
 
 --
 -- Indexes for table `pembayaran`
@@ -157,8 +172,7 @@ ALTER TABLE `pembayaran`
 ALTER TABLE `siswa`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `nis` (`nis`),
-  ADD KEY `kelas_id` (`kelas_id`),
-  ADD KEY `parent_id` (`parent_id`);
+  ADD KEY `kelas_id` (`kelas_id`);
 
 --
 -- Indexes for table `users`
@@ -181,42 +195,35 @@ ALTER TABLE `kelas`
 -- AUTO_INCREMENT for table `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `notifikasi`
---
-ALTER TABLE `notifikasi`
-  ADD CONSTRAINT `notifikasi_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-
---
 -- Constraints for table `siswa`
 --
 ALTER TABLE `siswa`
-  ADD CONSTRAINT `siswa_ibfk_2` FOREIGN KEY (`kelas_id`) REFERENCES `kelas` (`id`),
-  ADD CONSTRAINT `siswa_ibfk_3` FOREIGN KEY (`parent_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `siswa_ibfk_2` FOREIGN KEY (`kelas_id`) REFERENCES `kelas` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
