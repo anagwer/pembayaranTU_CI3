@@ -9,7 +9,7 @@ Instalasi
 1. **Clone Repository**
    Clone repository ini ke dalam direktori lokal Anda menggunakan Git:
    
-	git clone https://github.com/username/repository-name.git
+	git clone https://github.com/anagwer/pembayaranTU_CI3.git
 
 2. **Install Dependensi**
 	Gunakan Composer untuk menginstal dependensi yang diperlukan:
