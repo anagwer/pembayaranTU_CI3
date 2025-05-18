@@ -14,11 +14,11 @@ Instalasi
 2. **Install Dependensi**
 	Gunakan Composer untuk menginstal dependensi yang diperlukan:
 
-composer install
+	composer install
 
 3. **Konfigurasi Database**
-- Buka file `application/config/database.php`.
-- Sesuaikan pengaturan database dengan database yang Anda gunakan.
+	- Buka file `application/config/database.php`.
+	- Sesuaikan pengaturan database dengan database yang Anda gunakan.
 
 4. **Import Database**
 	Import skema database yang ada di folder `sql/` atau buat tabel yang diperlukan secara manual.
@@ -26,10 +26,9 @@ composer install
 5. **Jalankan Aplikasi**
 	Jalankan aplikasi di server lokal Anda:
 
-php -S localhost:8000
+	php -S localhost:8000
 
-
-Buka browser dan akses `http://localhost:8000` untuk melihat aplikasi.
+	Buka browser dan akses `http://localhost:8000` untuk melihat aplikasi.
 
 Alur Sistem
 -----------
