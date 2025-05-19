@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="card text-center p-3" style="height:125px;">
+                <div class="card text-center p-4" style="height:200px;">
                     <h5>Pembayaran Belum Lunas</h5>
                     <ul class="list-unstyled mb-0">
                         <?php foreach ($belum_lunas as $bl): ?>
