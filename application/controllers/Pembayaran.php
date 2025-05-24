@@ -48,6 +48,7 @@ class Pembayaran extends CI_Controller {
 			$id_kelas = $this->input->post('id_kelas');
 			$jenis = $this->input->post('jenis');
 			$jumlah = $this->input->post('jumlah');
+			$keterangan = $this->input->post('keterangan');
 			$created_at = date('Y-m-d H:i:s');
 
 			$siswa_kelas = $this->Siswa_model->get_by_kelas($id_kelas);
@@ -59,13 +60,14 @@ class Pembayaran extends CI_Controller {
 					'id_kelas'      => $id_kelas,
 					'jenis'         => $jenis,
 					'jumlah'        => $jumlah,
+					'keterangan'    => $keterangan,
 					'created_at'    => $created_at
 				];
 				$this->Pembayaran_model->insert($data);
 
 				$notifikasi = [
 					'id_siswa'   => $siswa->id,
-					'pesan'      => "Tagihan pembayaran $jenis sebesar Rp $jumlah telah ditambahkan.",
+					'pesan'      => "Tagihan pembayaran $jenis $keterangan sebesar Rp $jumlah telah ditambahkan.",
 					'is_read'    => 0,
 					'created_at' => $created_at
 				];

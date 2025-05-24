@@ -24,18 +24,18 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-																		<?php if(ucfirst($jenis)=='SPP'){
-																			echo '<th>Bulan</th>';
-																		}?>
+									<?php if(ucfirst($jenis)=='SPP'){
+										echo '<th>Bulan</th>';
+									}?>
                                     <th>Nama Siswa</th>
                                     <th>Kelas</th>
                                     <th>Jumlah</th>
                                     <th>Tanggal Bayar</th>
                                     <th>Keterangan</th>
                                     <th>Status</th>
-																		<?php if ($this->session->userdata('role') == 'Admin'): ?>
+									<?php if ($this->session->userdata('role') == 'Admin'): ?>
                                     <th>Aksi</th>
-																		<?php endif;?>
+									<?php endif;?>
 																		
                                 </tr>
                             </thead>
@@ -172,7 +172,12 @@
 						<label>Jumlah</label>
 						<input type="number" name="jumlah" class="form-control" required>
 					</div>
-					
+					<?php if(ucfirst($jenis)=='Kegiatan'){?>
+					<div class="form-group">
+						<label>Keterangan</label>
+						<textarea name="keterangan" class="form-control"></textarea>
+					</div>
+					<?php } ?>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-primary">Simpan</button>
