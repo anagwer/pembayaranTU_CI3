@@ -36,6 +36,7 @@
                                         <!-- Edit Modal -->
                                         <div class="modal fade" id="editKelas<?= $k->id ?>" tabindex="-1">
                                             <div class="modal-dialog">
+                                                <div class="modal-content">
 												<form method="post" action="<?= base_url('kelas/update') ?>">
 													<div class="modal-header">
 														<h5 class="modal-title">Edit Kelas</h5>
@@ -64,6 +65,7 @@
 														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
 													</div>
 												</form>
+                                            </div>
                                             </div>
                                         </div>
 
